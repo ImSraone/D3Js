@@ -1,0 +1,36 @@
+﻿@{
+    ViewBag.Title = "basicSVGShapes";
+}
+
+<html>
+<body>
+
+    <div id="container"></div>
+
+    <script>
+
+        var svg = d3.select("#container")
+                    .append("svg")
+                    .attr("width", 500)
+                    .attr("height", 500);
+        var circle = svg.append("circle")
+                        .attr("cx", 250)
+                        .attr("cy", 250)
+                        .attr("r", 50)
+                        .attr("fill", "red");
+
+        var rect = svg.append("rect")
+                        .attr("width", 100)
+                        .attr("height", 50);
+
+        var line = svg.append("line")
+                        .attr("x1", 0)
+                        .attr("y1", 100)
+                        .attr("x2", 100)
+                        .attr("y2", 400)
+                        .attr("stroke", "green")
+                        .attr("stroke-width", 10);
+    </script>
+
+</body>
+</html>

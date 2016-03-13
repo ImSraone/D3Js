@@ -1,0 +1,22 @@
+[
+  {
+    "Practice": "Microsoft",
+    "Strength": 130
+  },
+  {
+    "Practice": "Java",
+    "Strength": 250
+  },
+  {
+    "Practice": "Testing",
+    "Strength": 105
+  },
+  {
+    "Practice": "Mobility",
+    "Strength": 80
+  },
+  {
+    "Practice": "Others",
+    "Strength": 80
+  }
+]

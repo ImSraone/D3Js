@@ -1,0 +1,110 @@
+﻿@{
+    ViewBag.Title = "Practice Examples ";
+}
+<style>
+    ol{
+        float:left;
+    }
+    a:link{
+        text-decoration :none;
+    }
+</style>
+<div>
+    <ol>
+        <li>
+            <a href="basicSVGShapes">basic SVG Shapes</a>
+        </li>
+        <li>
+            <a href="visualizingData">Visualizing Data </a>
+        </li>
+        <li>
+            <a href="GroupsAndAxes">Groups And Axes</a>
+        </li>
+        <li>
+            <a href="EnterUpdateExit">Enter Update Exit</a>
+        </li>
+        <li>
+            <a href="Transitions">Transitions</a>
+        </li>
+        <li>
+            <a href="WorkingWithArrays">Working With Arrays</a>
+        </li>
+        <li>
+            <a href="LoadingExternalData">Loading External Data</a>
+        </li>
+        <li>
+            <a href="Paths">Paths</a>
+        </li>
+        <li>
+            <a href="Arcs">Arcs</a>
+        </li>
+        <li>
+            <a href="PieLayout">PieLayout</a>
+        </li>
+        <li>
+            <a href="TreeLayout">TreeLayout Arc</a>
+        </li>
+        <li>
+            <a href="TreeLayout2">TreeLayout</a>
+        </li>
+        <li>
+            <a href="ClusterPack">Cluster , Pack</a>
+        </li>
+        <li>
+            <a href="Bubble">Bubble</a>
+        </li>
+        <li>
+            <a href="HistogramLayout">Histogram Layout</a>
+        </li>
+        <li>
+            <a href="TreeMapLayout">TreeMap Layout</a>
+        </li>
+        <li>
+            <a href="Maps">Maps</a>
+        </li>
+    </ol>
+
+
+    <ol>
+        <li>
+            <a href="SVGExample">What is SVG ?</a>
+        </li>
+        <li>
+            <a href="colorLineChart">Line Chart</a>
+        </li>
+        <li>
+            <a href="BarChart">Bar Chart</a>
+        </li>
+        <li>
+            <a href="PieChart">Pie Chart</a>
+        </li>
+        <li>
+            <a href="Gauge">Gauge</a>
+        </li>
+        <li>
+            @{
+                string hrf = Url.Action("GeoNamesExtract", "Charts");
+                string hrf1 = Url.Action("stackedColumnChart", "Charts");
+            }
+            <a href="@hrf">Projections of Population on Map</a>
+        </li>
+        <li>
+            <a href="@hrf1">Stacked Column Chart </a>
+        </li>
+    </ol>
+
+    <ol>
+        <li>
+            <a href="http://bl.ocks.org/bobmonteverde/2070069" target="_blank">Advanced Line Chart</a>
+        </li>
+        <li>
+            <a href="http://nvd3.org/examples/pie.html" target="_blank">Advanced Pie Chart</a>
+        </li>
+        <li>
+            <a href="http://datamaps.github.io/" target="_blank">Advanced Maps</a>
+        </li>
+        <li>
+            <a href="https://github.com/mbostock/d3/wiki/Geo-Projections" target="_blank">Geo Projections</a>
+        </li>
+    </ol>
+</div>

@@ -1,0 +1,434 @@
+﻿@{
+    ViewBag.Title = "colorLineChart";
+}
+
+<body>
+    <div id="chart"></div>
+    <style>
+        #chart {
+            font: 13px Arial;
+        }
+        .axis path,
+        .axis line {
+            fill: none;
+            stroke: grey;
+            stroke-width: 1;
+            shape-rendering: crispEdges;
+        }
+        .line {
+            fill: none;
+            stroke: url(#line-gradient);
+            stroke-width: 1;
+        }
+    </style>
+    <script>
+        // Set the dimensions of the canvas / graph
+        var margin = { top: 30, right: 160, bottom: 50, left: 60 },
+            width = 900 - margin.left - margin.right,
+            height = 360 - margin.top - margin.bottom;
+
+        // Parse the date / time
+        var parseDate = d3.time.format("%d-%b-%y").parse,
+        formatDate = d3.time.format("%d-%b"),
+        bisectDate = d3.bisector(function (d) { return d.date; }).left;
+
+        // Set the ranges
+        var x = d3.time.scale().range([0, width]);
+        var y = d3.scale.linear().range([height, 0]);
+
+        // Define the axes
+        var xAxis = d3.svg.axis().scale(x)
+            .orient("bottom").ticks(5);
+
+        var yAxis = d3.svg.axis().scale(y)
+            .orient("left").ticks(5);
+
+        // Define the line
+        var valueline = d3.svg.line()
+            .x(function (d) { return x(d.date); })
+            .y(function (d) { return y(d.close); });
+
+        // Adds the svg canvas
+        var svg = d3.select("#chart")
+            .append("svg")
+                .attr("width", width + margin.left + margin.right)
+                .attr("height", height + margin.top + margin.bottom)
+            .append("g")
+                .attr("transform",
+                      "translate(" + margin.left + "," + margin.top + ")");
+        // tool tip code
+        var lineSvg = svg.append("g");
+        var focus = svg.append("g")
+            .style("display", "none");
+
+
+        // Get the data
+        d3.tsv("../Data/Practice/colorLine_data.tsv", function (error, data) {
+            data.forEach(function (d) {
+                d.date = parseDate(d.date);
+                d.close = +d.close;
+            });
+
+            // Scale the range of the data
+            var maxii = d3.max(data, function (d) { return d.close; });
+            x.domain(d3.extent(data, function (d) { return d.date; }));
+            y.domain([0, maxii]);
+
+            // Add the valueline path.
+
+            lineSvg.append("path")
+                .attr("class", "line")
+                .attr("d", valueline(data));
+
+            // Maakeing diffrent colors for single line 
+
+            var maxii = "" + maxii + "";
+            var cutOff = (("100" / maxii) * "100")+"%";
+            var safeZone = (("200" / maxii) * "100")+"%";
+            maxii += "%";
+
+            svg.append("linearGradient")
+                .attr("id", "line-gradient")
+                .attr("gradientUnits", "userSpaceOnUse")
+                .attr("x1", 0).attr("y1", y(0))
+                .attr("x2", 0).attr("y2", y(650))
+                .selectAll("stop")
+                .data([
+                    { offset: "0%", color: "green" },
+                    { offset: cutOff, color: "green" },
+                    { offset: cutOff, color: "blue" },
+                    { offset: safeZone, color: "blue" },
+                    { offset: safeZone, color: "red" },
+                    { offset: "100%", color: "red" }
+                ])
+                .enter().append("stop")
+                .attr("offset", function (d) { return d.offset; })
+                .attr("stop-color", function (d) { return d.color; });
+
+            // If we want to add two separate line for diffrent cutoff this is the code 
+
+            //svg.append("path")
+            //    .attr("d", valueline(data.filter(function (d) {
+            //        return d.close < 100;
+            //    })))
+            //    .attr("stroke", "steelblue");
+
+            //svg.append("path")
+            //    .attr("d", valueline(data.filter(function (d) {
+            //        return d.close >= 100;
+            //    })))
+            //    .attr("stroke", "red");
+
+
+            // Add the X Axis
+            svg.append("g")
+                .attr("class", "x axis")
+                .attr("transform", "translate(0," + height + ")")
+                .call(xAxis);
+
+            // Add the Y Axis
+            svg.append("g")
+                .attr("class", "y axis")
+                .call(yAxis);
+
+            // X Axis Text
+            svg.append("text")
+                .attr("x", width/2)
+                .attr("y", height + margin.bottom)
+                .style("text-anchor", "middle")
+                .text(" Date in terms of Years ");
+
+            // Y Axis Text
+            svg.append("text")
+                .attr("transform","rotate(-90)")
+                .attr("y", 0 - margin.left)
+                .attr("x", 0 - (height / 2))
+                .attr("dy", "1em")
+                .style("text-anchor", "middle")
+                .text("Life cycles of motor");
+
+            // Tool tip info 
+            var Varients = [
+                { cy: 20, y: 25, color: "red", text: "Danger Zone" },
+                { cy: 40, y: 45, color: "blue", text: "Safe Zone" },
+                { cy: 60, y: 65, color: "green", text: "Healthy Zone" }
+            ];
+            Varients.forEach(function (d) {
+                svg.append("circle")
+                        .attr("cx", width + 70)
+                        .attr("cy", d.cy)
+                        .attr("r", 5)
+                        .attr("fill", d.color);
+                svg.append("text")
+                        .attr("y", d.y)
+                        .attr("x", width + 80)
+                        .text(d.text);
+            });
+
+
+            // tool tip code
+
+            // append the x line
+            focus.append("line")
+                .attr("class", "x")
+                .style("stroke", "#00cc00")
+                .style("stroke-dasharray", "3,3")
+                .style("opacity", 0.5)
+                .attr("y1", 0)
+                .attr("y2", height);
+
+            // append the y line
+            focus.append("line")
+                .attr("class", "y")
+                .style("stroke", "#00cc00")
+                .style("stroke-dasharray", "3,3")
+                .style("opacity", 0.5)
+                .attr("x1", width)
+                .attr("x2", width);
+
+            // append the circle at the intersection
+            focus.append("circle")
+                .attr("class", "y")
+                .style("fill", "none")
+                .style("stroke", "#00cc00")
+                .attr("r", 4);
+
+            // place the value at the intersection
+            focus.append("text")
+                .attr("class", "y1")
+                .style("stroke", "white")
+                .style("stroke-width", "3.5px")
+                .style("opacity", 0.8)
+                .attr("dx", 8)
+                .attr("dy", "-.3em");
+            focus.append("text")
+                .attr("class", "y2")
+                .attr("dx", 8)
+                .attr("dy", "-.3em");
+
+            // place the date at the intersection
+            focus.append("text")
+                .attr("class", "y3")
+                .style("stroke", "white")
+                .style("stroke-width", "3.5px")
+                .style("opacity", 0.8)
+                .attr("dx", 8)
+                .attr("dy", "1em");
+            focus.append("text")
+                .attr("class", "y4")
+                .attr("dx", 8)
+                .attr("dy", "1em");
+
+            // append the rectangle to capture mouse
+            svg.append("rect")
+                .attr("width", width)
+                .attr("height", height)
+                .style("fill", "none")
+                .style("pointer-events", "all")
+                .on("mouseover", function () { focus.style("display", null); })
+                .on("mouseout", function () { focus.style("display", "none"); })
+                .on("mousemove", mousemove);
+
+
+            function mousemove() {
+                var x0 = x.invert(d3.mouse(this)[0]),
+                    i = bisectDate(data, x0, 1),
+                    d0 = data[i - 1],
+                    d1 = data[i],
+                    d = x0 - d0.date > d1.date - x0 ? d1 : d0;
+
+                focus.select("circle.y")
+                    .attr("transform",
+                    "translate(" + x(d.date) + "," +
+               y(d.close) + ")");
+
+                focus.select("text.y1")
+                    .attr("transform",
+                          "translate(" + x(d.date) + "," +
+                                         y(d.close) + ")")
+                    .text(d.close)
+                    .attr("stroke", "green");
+
+                focus.select("text.y2")
+                    .attr("transform",
+                          "translate(" + x(d.date) + "," +
+                                         y(d.close) + ")")
+                    .text(d.close)
+                    .attr("stroke", "green");
+
+                focus.select("text.y3")
+                    .attr("transform",
+                          "translate(" + x(d.date) + "," +
+                                         y(d.close) + ")")
+                    .text(formatDate(d.date))
+                    .attr("stroke", "green");
+
+                focus.select("text.y4")
+                    .attr("transform",
+                          "translate(" + x(d.date) + "," +
+                                         y(d.close) + ")")
+                    .text(formatDate(d.date))
+                    .attr("stroke", "green");
+
+                focus.select(".x")
+                    .attr("transform",
+                          "translate(" + x(d.date) + "," +
+                                         y(d.close) + ")")
+                               .attr("y2", height - y(d.close));
+
+                focus.select(".y")
+                    .attr("transform",
+                          "translate(" + width * -1 + "," +
+                                         y(d.close) + ")")
+                               .attr("x2", width + width);
+            }
+
+        });
+    </script>
+</body>
+
+
+
+
+
+@*Code for line chart with out tool  tip*@
+@*<script>
+        // Set the dimensions of the canvas / graph
+        var margin = { top: 30, right: 160, bottom: 50, left: 60 },
+            width = 900 - margin.left - margin.right,
+            height = 360 - margin.top - margin.bottom;
+
+        // Parse the date / time
+        var parseDate = d3.time.format("%d-%b-%y").parse;
+
+        // Set the ranges
+        var x = d3.time.scale().range([0, width]);
+        var y = d3.scale.linear().range([height, 0]);
+
+        // Define the axes
+        var xAxis = d3.svg.axis().scale(x)
+            .orient("bottom").ticks(5);
+
+        var yAxis = d3.svg.axis().scale(y)
+            .orient("left").ticks(5);
+
+        // Define the line
+        var valueline = d3.svg.line()
+            .x(function (d) { return x(d.date); })
+            .y(function (d) { return y(d.close); });
+
+        // Adds the svg canvas
+        var svg = d3.select("#chart")
+            .append("svg")
+                .attr("width", width + margin.left + margin.right)
+                .attr("height", height + margin.top + margin.bottom)
+            .append("g")
+                .attr("transform",
+                      "translate(" + margin.left + "," + margin.top + ")");
+
+        // Get the data
+        d3.tsv("../Data/Practice/colorLine_data.tsv", function (error, data) {
+            data.forEach(function (d) {
+                d.date = parseDate(d.date);
+                d.close = +d.close;
+            });
+
+            // Scale the range of the data
+            var maxii = d3.max(data, function (d) { return d.close; });
+            x.domain(d3.extent(data, function (d) { return d.date; }));
+            y.domain([0, maxii]);
+
+            // Add the valueline path.
+
+            svg.append("path")
+                .attr("class", "line")
+                .attr("d", valueline(data));
+
+            // Maakeing diffrent colors for single line
+
+            var maxii = "" + maxii + "";
+            var cutOff = (("100" / maxii) * "100") + "%";
+            var safeZone = (("200" / maxii) * "100") + "%";
+            maxii += "%";
+
+            svg.append("linearGradient")
+                .attr("id", "line-gradient")
+                .attr("gradientUnits", "userSpaceOnUse")
+                .attr("x1", 0).attr("y1", y(0))
+                .attr("x2", 0).attr("y2", y(650))
+                .selectAll("stop")
+                .data([
+                    { offset: "0%", color: "green" },
+                    { offset: cutOff, color: "green" },
+                    { offset: cutOff, color: "blue" },
+                    { offset: safeZone, color: "blue" },
+                    { offset: safeZone, color: "red" },
+                    { offset: "100%", color: "red" }
+                ])
+                .enter().append("stop")
+                .attr("offset", function (d) { return d.offset; })
+                .attr("stop-color", function (d) { return d.color; });
+
+            // If we want to add two separate line for diffrent cutoff this is the code
+
+            //svg.append("path")
+            //    .attr("d", valueline(data.filter(function (d) {
+            //        return d.close < 100;
+            //    })))
+            //    .attr("stroke", "steelblue");
+
+            //svg.append("path")
+            //    .attr("d", valueline(data.filter(function (d) {
+            //        return d.close >= 100;
+            //    })))
+            //    .attr("stroke", "red");
+
+
+            // Add the X Axis
+            svg.append("g")
+                .attr("class", "x axis")
+                .attr("transform", "translate(0," + height + ")")
+                .call(xAxis);
+
+            // Add the Y Axis
+            svg.append("g")
+                .attr("class", "y axis")
+                .call(yAxis);
+
+            // X Axis Text
+            svg.append("text")
+                .attr("x", width / 2)
+                .attr("y", height + margin.bottom)
+                .style("text-anchor", "middle")
+                .text(" Date in terms of Years ");
+
+            // Y Axis Text
+            svg.append("text")
+                .attr("transform", "rotate(-90)")
+                .attr("y", 0 - margin.left)
+                .attr("x", 0 - (height / 2))
+                .attr("dy", "1em")
+                .style("text-anchor", "middle")
+                .text("Life cycles of motor");
+
+            // Tool tip info
+            var Varients = [
+                { cy: 20, y: 25, color: "red", text: "Danger" },
+                { cy: 40, y: 45, color: "blue", text: "Safe" },
+                { cy: 60, y: 65, color: "green", text: "Healthy" }
+            ];
+            Varients.forEach(function (d) {
+                svg.append("circle")
+                        .attr("cx", width + 70)
+                        .attr("cy", d.cy)
+                        .attr("r", 5)
+                        .attr("fill", d.color);
+                svg.append("text")
+                        .attr("y", d.y)
+                        .attr("x", width + 80)
+                        .text(d.text);
+            });
+        });
+</script>*@
+
+@*http://www.d3noob.org/2014/07/my-favourite-tooltip-method-for-line.html*@

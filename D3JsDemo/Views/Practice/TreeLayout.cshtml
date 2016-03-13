@@ -1,0 +1,32 @@
+﻿@{
+    ViewBag.Title = "TreeLayout";
+}
+
+<html>
+<body>
+
+    <div id="container"></div>
+
+    <script>
+
+        var svg = d3.select("#container")
+                    .append("svg")
+                    .attr("width", 500)
+                    .attr("height", 500);
+
+        var giagonal = d3.svg.diagonal()
+                             .source({ x: 10, y: 10 })
+                             .target({ x: 300, y: 300 });
+
+
+        svg.append("path")
+            .attr("fill", "none")
+            .attr("stroke", "black")
+            .attr("d", giagonal);
+
+
+
+
+    </script>
+</body>
+</html>

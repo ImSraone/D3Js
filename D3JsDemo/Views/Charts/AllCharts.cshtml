@@ -1,0 +1,40 @@
+﻿@{
+    ViewBag.Title = "All Charts";
+}
+<style>
+    a:link {
+        text-decoration: none;
+    }
+    h2 {
+        color: #c8c8c8;
+    }
+</style>
+<h2>Basic Charts</h2>
+
+<ol>
+    <li>
+        <a href="Charts/lineChart">Line Chart</a>
+    </li>
+    <li>
+        <a href="Charts/simpleBarChart">Bar Chart </a>
+    </li>
+    <li>
+        <a href="Charts/pieChart">Pie Chart </a>
+    </li>
+    <li>
+        <a href="Charts/areaChart">Area Chart </a>
+    </li>
+    <li>        
+        @{
+            string hrf = Url.Action("Maps", "Practice");
+        }
+        <a href="@hrf">Maps</a>
+    </li>
+    <li>
+        <a href="Charts/DraggableNodes">Draggable Nodes</a>
+    </li>
+    <li>
+        <a href="Charts/collapsibleTreeChart">Collapsible Tree </a>
+    </li>
+</ol>
+

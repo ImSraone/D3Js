@@ -1,0 +1,42 @@
+[
+  {
+    "Country": "United States",
+    "Strength": 17.41
+  },
+  {
+    "Country": "China",
+    "Strength": 10.35
+  },
+  {
+    "Country": "India",
+    "Strength": 2.04
+  },
+  {
+    "Country": "Japan",
+    "Strength": 4.77
+  },
+  {
+    "Country": "Germany",
+    "Strength": 3.82
+  },
+  {
+    "Country": "France",
+    "Strength": 2.9
+  },
+  {
+    "Country": "UK",
+    "Strength": 2.85
+  },
+  {
+    "Country": "Brazil",
+    "Strength": 2.24
+  },
+  {
+    "Country": "Italy",
+    "Strength": 2.13
+  },
+  {
+    "Country": "Russia",
+    "Strength": 2.05
+  }
+]

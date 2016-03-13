@@ -1,0 +1,31 @@
+﻿@{
+    ViewBag.Title = "Arcs";
+}
+
+<html>
+<body>
+
+    <div id="container"></div>
+
+    <script>
+
+        var svg = d3.select("#container")
+                    .append("svg")
+                    .attr("width", 500)
+                    .attr("height", 500);
+
+        var group = svg.append("g")
+                        .attr("transform", "translate(100,100)");
+        var r = 100,
+            p = Math.PI * 2;
+        var arc = d3.svg.arc()
+                    .innerRadius(r - 20)
+                    .outerRadius(r)
+                    .startAngle(0)
+                    .endAngle(p - 2);
+
+        group.append("path")
+             .attr("d", arc);
+    </script>
+</body>
+</html>

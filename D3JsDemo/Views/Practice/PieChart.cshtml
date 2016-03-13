@@ -1,0 +1,50 @@
+﻿@{
+    ViewBag.Title = "PieChart";
+}
+
+<html>
+<body>
+    <div id="PieChart"></div>
+
+        <div id="DonutChart"></div>
+    <script>
+        function DrawDonut(In_r,Out_r,ID) {
+            //var In_r = 200, Out_r = 100;// Change Out_r to 0 to get Pie chart
+            var color = d3.scale.category10();
+            var svg = d3.select("#" + ID)
+                        .append("svg")
+                        .attr("width", 500)
+                        .attr("height", 500);
+            var group = svg.append("g")
+                            .attr("transform", "translate(300,300)");
+            var arc = d3.svg.arc()
+                            .innerRadius(In_r)
+                            .outerRadius(Out_r);
+
+            var pie = d3.layout.pie()
+                        .value(function (d) { return d.Strength; });
+
+            d3.json("../Data/Practice/PieChart_data.json", function (error, data) {
+
+                var arcs = group.selectAll("arc")
+                                 .data(pie(data))
+                                 .enter()
+                                 .append("g")
+                                 .attr("class", "arc");
+                arcs.append("path")
+                    .attr("d", arc)
+                    .attr("fill", function (d) { return color(d.data.Practice); });
+
+                arcs.append("text")
+                    .attr("transform", function (d) { return "translate(" + arc.centroid(d) + ")"; })
+                    .attr("text-anchor", "middle")
+                    .attr("font-size", "1.2em")
+                    .text(function (d) { return d.data.Practice; });
+
+            });
+        }
+        DrawDonut(200, 0, "PieChart");
+        DrawDonut(200, 100, "DonutChart");
+    </script>
+</body>
+</html>
