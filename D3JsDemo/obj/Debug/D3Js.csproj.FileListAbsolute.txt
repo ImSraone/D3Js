@@ -87,3 +87,4 @@ C:\Users\sravan\Documents\Visual Studio 2013\Projects\D3JsDemo\D3JsDemo\bin\zh-H
 C:\Users\sravan\Documents\Visual Studio 2013\Projects\D3JsDemo\D3JsDemo\bin\zh-Hant\System.Spatial.resources.dll
 C:\Users\sravan\Documents\Visual Studio 2013\Projects\D3JsDemo\D3JsDemo\obj\Debug\D3JsDemo.dll
 C:\Users\sravan\Documents\Visual Studio 2013\Projects\D3JsDemo\D3JsDemo\obj\Debug\D3JsDemo.pdb
+C:\Users\sravan\Documents\Visual Studio 2013\Projects\D3JsDemo\D3JsDemo\obj\Debug\D3Js.csprojResolveAssemblyReference.cache

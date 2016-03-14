@@ -254,12 +254,10 @@
     <Content Include="Data\data.csv" />
     <Content Include="Data\data.json" />
     <Content Include="Data\data.tsv" />
-    <Content Include="Data\DocDB.json" />
     <Content Include="Data\geonames_cities100000.csv" />
     <Content Include="Data\Practice\Bubble_data.json" />
     <Content Include="Data\Practice\TreeMapLayout_data.json" />
     <Content Include="Data\Practice\PieChart_data.json" />
-    <Content Include="Data\atad.csv" />
     <Content Include="Data\data_OneLakh.csv" />
     <Content Include="Data\data_TwoLakh.csv" />
     <Content Include="Data\data_50K.csv" />

@@ -4,7 +4,7 @@
 <html>
 <body>
 
-    Ref <a href="https://en.wikipedia.org/wiki/Scalable_Vector_Graphics" target="_blank">Explaination</a>
+    Ref : <a href="https://en.wikipedia.org/wiki/Scalable_Vector_Graphics" target="_blank">Explaination</a>
 
     <div id="container"></div>
 
@@ -33,9 +33,6 @@
                             .attr("d", path)
                             .attr("class", "area")
                             .attr("fill", function (d,i) { return color(i); });
-            group.append("text")
-                 .attr("x", function (d) { return path.centroid(d)[0] })
-                 .attr("y", function (d) { return path.centroid(d)[1] });
         });
     </script>
 </body>
